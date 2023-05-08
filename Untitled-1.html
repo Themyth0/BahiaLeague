@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Game</title>
+	<link rel="stylesheet" href="style.css">
+  <script>
+    var audio = document.getElementById("myAudio");
+
+    audio.addEventListener("ended", function() {
+      var randomSource = Math.floor(Math.random() * audio.children.length);
+      audio.src = audio.children[randomSource].src;
+      audio.play();
+    });
+  </script>
+  
+</head>
+<body>
+  
+	<div id="game-container">
+		<h1>Simon Dice</h1>
+		<div id="game-board">
+			<div class="button green"></div>
+			<div class="button red"></div>
+			<div class="button yellow"></div>
+			<div class="button blue"></div>
+		</div>
+		<div id="score-container">
+			<h2>Score: <span id="score">0</span></h2>
+		</div>
+		<button id="start-button">Start</button>
+	</div>
+	<script src="script.js"></script>
+</body>
+<style>
+    .button-animation {
+  animation: button-pulse 0.3s ease-in-out;
+}
+
+@keyframes button-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+    #game-container {
+	text-align: center;
+	margin-top: 50px;
+}
+
+h1 {
+	font-size: 50px;
+	margin-bottom: 50px;
+}
+
+#game-board {
+	display: flex;
+	flex-wrap: wrap;
+	width: 350px;
+	margin: 0 auto;
+}
+
+.button {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	margin: 20px;
+	cursor: pointer;
+	opacity: 0.5;
+	transition: opacity 0.2s ease-in-out;
+}
+
+.button.green {
+	background-color: green;
+}
+
+.button.red {
+	background-color: red;
+}
+
+.button.yellow {
+	background-color: yellow;
+}
+
+.button.blue {
+	background-color: blue;
+}
+
+.button:hover {
+	opacity: 1;
+}
+
+#score-container {
+	margin-top: 50px;
+}
+
+#score {
+	font-size: 40px;
+}
+
+button#start-button {
+	font-size: 30px;
+	margin-top: 50px;
+	padding: 10px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+body{
+  background-color: #ffffff;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 200 200'%3E%3Cpolygon fill='%23DCEFFA' points='100 0 0 100 100 100 100 200 200 100 200 0'/%3E%3C/svg%3E");
+background-size: cover;
+}
+
+</style>
+<script>
+  const gameContainer = document.getElementById("game-container");
+const buttons = document.querySelectorAll(".button");
+const startButton = document.getElementById("start-button");
+const scoreContainer = document.getElementById("score-container");
+const scoreElement = document.getElementById("score");
+const colors = ["green", "red", "yellow", "blue"];
+let sequence = [];
+let playerSequence = [];
+let score = 0;
+
+function playSequence() {
+    let i = 0;
+    const intervalId = setInterval(() => {
+        if (i >= sequence.length) {
+            clearInterval(intervalId);
+            playerSequence = [];
+            return;
+        }
+        const color = sequence[i];
+        const button = document.querySelector(`.button.${color}`);
+        button.style.opacity = 1;
+        setTimeout(() => {
+            button.style.opacity = 0.5;
+        }, 500);
+        i++;
+    }, 1000 - score * 50);
+    
+}
+function lightUpButton(button) {
+  button.classList.add("lit");
+  // Agregar la clase de animación
+  button.classList.add("button-animation");
+  setTimeout(function() {
+    button.classList.remove("lit");
+    // Quitar la clase de animación
+    button.classList.remove("button-animation");
+  }, 300);
+}
+
+
+function generateSequence() {
+    let lastColor = sequence.length > 0 ? sequence[sequence.length - 1] : null;
+    let color = null;
+    do {
+        color = colors[Math.floor(Math.random() * colors.length)];
+    } while (color === lastColor);
+    sequence.push(color);
+}
+
+function startGame() {
+    score = 0;
+    scoreElement.innerText = score;
+    sequence = [];
+    playerSequence = [];
+    generateSequence();
+    playSequence();
+    startButton.style.display = "none";
+}
+
+function handleButtonClick(event) {
+    const color = event.target.classList[1];
+    playerSequence.push(color);
+    const index = playerSequence.length - 1;
+    const correct = sequence[index] === color;
+    if (!correct) {
+        endGame();
+        return;
+    }
+    if (playerSequence.length === sequence.length) {
+        score++;
+        scoreElement.innerText = score;
+        playerSequence = [];
+        generateSequence();
+        playSequence();
+    }
+}
+
+function endGame() {
+    alert(`Game over! Your score is ${score}`);
+    startButton.style.display = "block";
+    
+}
+
+buttons.forEach(button => {
+    button.addEventListener("click", handleButtonClick);
+});
+
+startButton.addEventListener("click", startGame);
+
+
+
+</script>
+</html>
+
