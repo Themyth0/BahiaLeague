@@ -4,15 +4,8 @@
 	<meta charset="UTF-8">
 	<title>Game</title>
 	<link rel="stylesheet" href="style.css">
-  <script>
-    var audio = document.getElementById("myAudio");
+  <link rel="website icon" href="Bahialeague.jpeg">
 
-    audio.addEventListener("ended", function() {
-      var randomSource = Math.floor(Math.random() * audio.children.length);
-      audio.src = audio.children[randomSource].src;
-      audio.play();
-    });
-  </script>
   
 </head>
 <body>
@@ -139,7 +132,7 @@ function playSequence() {
         }
         const color = sequence[i];
         const button = document.querySelector(`.button.${color}`);
-        button.style.opacity = 1;
+        button.style.opacity = 100;
         setTimeout(() => {
             button.style.opacity = 0.5;
         }, 500);
