@@ -48,7 +48,7 @@
 }
 
 h1 {
-	font-size: 50px;
+	font-size: 200px;
 	margin-bottom: 50px;
 }
 
@@ -60,9 +60,9 @@ h1 {
 }
 
 .button {
-	width: 150px;
-	height: 150px;
-	border-radius: 50%;
+	width: 300px;
+	height: 300px;
+	border-radius: 20%;
 	margin: 20px;
 	cursor: pointer;
 	opacity: 0.5;
@@ -94,11 +94,13 @@ h1 {
 }
 
 #score {
-	font-size: 40px;
+	font-size: 100px;
 }
-
+h2{
+  font-size: 50px;
+}
 button#start-button {
-	font-size: 30px;
+	font-size: 50px;
 	margin-top: 50px;
 	padding: 10px 20px;
 	border-radius: 5px;
@@ -132,7 +134,7 @@ function playSequence() {
         }
         const color = sequence[i];
         const button = document.querySelector(`.button.${color}`);
-        button.style.opacity = 100;
+        button.style.opacity = 5;
         setTimeout(() => {
             button.style.opacity = 0.5;
         }, 500);
